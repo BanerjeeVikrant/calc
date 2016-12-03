@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+	<title>Calculator</title>
+	
+	<style type="text/css">
+		body{
+			background-color: #bfbfbf;
+		}
+		.main{
+			background-color: black;
+			height: 400px;
+			width: 370px;
+			position:relative;
+			top:100px;
+			left:40%;
+			border-style: outset;
+			border-width: 10px;
+			
+		}
+		#display{
+			width: 310px;
+			height: 70px;
+			position: relative;
+			top: 20px;
+			left: 7%;
+			font-size: 25px;
+			text-align: right;
+			background-color: white;
+		}
+		.inner {
+			width: 350px;
+			height: 300px;
+			position: relative;
+			top: 40px;
+			left:2%;
+		}
+		.first-row {
+			padding-bottom: 10px;
+		}
+		.second-row {
+			padding-bottom: 10px;
+		}
+		.third-row {
+			padding-bottom: 10px;
+		}
+		.fourth-row {
+			padding-bottom: 10px;
+		}
+		.button {
+			height: 40px;
+			width: 50px;
+			margin-left: 15px;
+			
+		}
+		.button.blue{
+			background-color: blue;
+			color: white;
+		}
+		.button.red{
+			margin-left: 15px;
+			background-color: red;
+			color: white;
+		}
+		.button.blue:hover {
+		    background-color: #003366;
+		}
+		.button.red:hover, .button.middle:hover {
+		    background-color: #990000;
+		}
+	</style>
+</head>
+<body>
+<div class="main">
+	<div id="display">0</div>
+	
+	<div class="inner">
+		<p class="first-row">
+			<input class="red button" type="button" value="CE"> 
+			<input class="blue button" type="button" value="1"> 
+			<input class="blue button" type="button" value="2"> 
+			<input class="blue button" type="button" value="3">
+			<input class="red button" type="button" value="+">
+		</p>
+		
+		<p class="second-row">
+			<input class="red button" type="button" value="C"> 
+			<input class="blue button" type="button" value="4">
+			<input class="blue button" type="button" value="5"> 
+			<input class="blue button" type="button" value="6">
+			<input class="red button" type="button" value="-">
+		 </p>
+		
+		<p class="third-row">
+			<input class="red button" type="button" value="&#x03C0;"> 
+			<input class="blue button" type="button" value="7"> 
+			<input class="blue button" type="button" value="8"> 
+			<input class="blue button" type="button" value="9"> 
+			<input class="red button" type="button" value="*">
+		</p>
+		
+		<p class="fourth-row">
+			<input class="red button" type="button" value="&#x221A;"> 
+			<input class="red button" type="button" value="x/y">
+			<input class="blue button" type="button" value="0"> 
+			<input class="equal button" type="button" value="=">
+			<input class="red button" type="button" value="&#x00f7;">
+		</p>
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+$(function() {
+	var acc_val = 0;
+	var new_val = 0;
+	var acc_oper = null;
+	$(".button").click(function() {
+		var curr_str = $(this).val();
+		var curr_val = Number(curr_str);
+		if (curr_val>=0 && curr_val<=9) {
+			new_val = $("#display").text()+curr_str;
+			$("#display").text(Number(new_val));
+		} else if (curr_str == '+' || curr_str == '-' || curr_str == '*' || curr_str == "\u00f7"){
+			acc_val = new_val;
+			acc_oper = curr_str;
+			if (acc_oper == "\u00f7") { acc_oper = '/';}
+			$("#display").text('0');
+		} else if (curr_str == "=") {
+			if (acc_oper == '+') {
+				new_val = Number(acc_val) + Number(new_val);
+			} else if (acc_oper == '-') {
+				new_val = Number(acc_val) - Number(new_val);
+			} else if (acc_oper == '*') {
+				new_val = Number(acc_val) * Number(new_val);
+			} else if (acc_oper == '/') {
+				new_val = Number(acc_val) / Number(new_val);
+			} 
+			$("#display").text(new_val);
+		} else if (curr_str == 'CE'){
+			acc_val = "0";
+			new_val = "0";
+			acc_oper = null;
+			$("#display").text(new_val);
+		} 
+		else if (curr_str == 'C'){
+			new_val = $("#display").text();
+			if(new_val.length == 1){
+				new_val = 0;
+			}else{
+				new_val = new_val.substring(0, new_val.length-1);
+			}
+			
+			$("#display").text(new_val);
+		}
+		else if (curr_str == '\u03C0'){
+			if(new_val != 0){
+				new_val = new_val*Math.PI;
+			}else{
+				new_val = Math.PI;
+			}
+			
+			$("#display").text(new_val);
+		}else if(curr_str == '\u221A'){
+			if(new_val != 0){
+				new_val = Math.sqrt(Number(new_val));
+			}else{
+				new_val = 0;
+			}
+			$("#display").text(new_val);
+		}
+			
+	});
+});
+</script>
+
+</body>
+</html>
